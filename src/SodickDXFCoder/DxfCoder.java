@@ -26,10 +26,11 @@ import javax.swing.JSeparator;
 import javax.swing.JTextArea;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class DxfCoder implements ListSelectionListener {
 
-	private static final String STANDARD_DIR = "E:\\Mats\\My Dropbox\\Ironcad";
+	private String workingDir = "E:\\Dropbox\\Mecona\\Gängfräs";
 	private JFrame frame;
 	private JTextArea textArea;
 
@@ -136,8 +137,8 @@ public class DxfCoder implements ListSelectionListener {
 
 
 	private Arc dxfReadArc(BufferedReader inFile) throws IOException {
-		String inLine1 = null;
-		String inLine2 = null;
+		String inLine1;
+		String inLine2;
 		
 		double xC = 0,
 		       yC = 0,
@@ -178,8 +179,8 @@ public class DxfCoder implements ListSelectionListener {
 	}
 
 	private Line dxfReadLine(BufferedReader inFile) throws IOException {
-		String inLine1 = null;
-		String inLine2 = null;
+		String inLine1;
+		String inLine2;
 		double x1 = 0, x2 = 0, y1 = 0, y2 = 0;
 		
 		do {
@@ -283,13 +284,15 @@ public class DxfCoder implements ListSelectionListener {
 	public void fileOpen() {
 		plotPanel.chainList.clear();
 		BufferedReader inFile;
-		File dir = new File(STANDARD_DIR);
+		File dir = new File(workingDir);
 		JFileChooser fc = new JFileChooser(dir);
+                fc.removeChoosableFileFilter(fc.getAcceptAllFileFilter());
+                fc.addChoosableFileFilter(new FileNameExtensionFilter("DXF-filer", "dxf"));
 		int returnVal = fc.showOpenDialog(null);
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			try {
 				inFile = new BufferedReader(new FileReader(fc.getSelectedFile()));
-				
+				workingDir = fc.getSelectedFile().getPath();
 				boolean inEntitiesSection = false;
 				String inLine2 = null;
 				while ( (inFile.readLine()) != null ) {
@@ -346,7 +349,7 @@ public class DxfCoder implements ListSelectionListener {
 			JOptionPane.showMessageDialog(frame, "Välj först en kedja som skall kodas");
 		} else {
                     CodeStraightDialog cd;
-                    cd = new CodeStraightDialog(plotPanel.chainList.listOfChains.get(selectedChains[0]));
+                    cd = new CodeStraightDialog(plotPanel.chainList.listOfChains.get(selectedChains[0]),workingDir);
                     cd.showDialog();
 		}
 		

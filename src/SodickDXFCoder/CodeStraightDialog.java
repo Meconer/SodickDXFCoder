@@ -33,7 +33,7 @@ public class CodeStraightDialog extends JDialog {
 	private JButton okButton;
 	private JButton btnSkapaProgram;
 
-	private static final String STANDARD_DIR = "E:\\Mats\\My Dropbox\\Ironcad";
+	private String workingDir;
 	private static final String START_SECTION_FILE_NAME = "straight.txt";
 	private final ButtonGroup compButtonGrp = new ButtonGroup();
 	private JRadioButton rdbtnG41;
@@ -54,8 +54,9 @@ public class CodeStraightDialog extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
-	public CodeStraightDialog(Chain chainToCode) {
+	public CodeStraightDialog(Chain chainToCode, String workingDir) {
 		super();
+                this.workingDir = workingDir;
 		this.chainToCode = chainToCode;
 		setBounds(100, 100, 450, 300);
 		getContentPane().setLayout(new BorderLayout());
@@ -113,6 +114,7 @@ public class CodeStraightDialog extends JDialog {
 		}
 	}
 
+
 	public void showDialog() {
 		this.setVisible(true);
 		
@@ -120,7 +122,7 @@ public class CodeStraightDialog extends JDialog {
 
 
 	private void code() {
-		File f = new File(STANDARD_DIR);
+		File f = new File(workingDir);
 		JFileChooser fc = new JFileChooser(f);
 		Boolean cancel = false;
 		int returnVal = fc.showSaveDialog(contentPanel);
