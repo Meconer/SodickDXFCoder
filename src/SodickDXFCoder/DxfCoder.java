@@ -321,7 +321,7 @@ public class DxfCoder implements ListSelectionListener {
 					String s = "Kedja " + i ;
 					chainListBoxModel.addElement(s);
 				}
-				
+				if (noOfChains>0) chainListBox.setSelectedIndex(0);
 			} catch (FileNotFoundException e) {
 				JOptionPane.showMessageDialog(frame, "Unable to find file");
 			} catch (IOException e) {

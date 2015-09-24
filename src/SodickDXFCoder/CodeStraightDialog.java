@@ -34,12 +34,19 @@ public class CodeStraightDialog extends JDialog {
 	private JButton btnSkapaProgram;
 
 	private String workingDir;
-	private static final String START_SECTION_FILE_NAME = "straight.txt";
-	private final ButtonGroup compButtonGrp = new ButtonGroup();
-	private JRadioButton rdbtnG41;
+	private static final String START_SECTION_FILE_NAME_1 = "straight1.txt";
+	private static final String START_SECTION_FILE_NAME_6 = "straight6.txt";
+
+        private final ButtonGroup compButtonGrp = new ButtonGroup();
+        private JRadioButton rdbtnG41;
 	private JRadioButton rdbtnG42;
 	private JRadioButton rdbtnG40;
-	private double chainStartPointx;
+
+        private final ButtonGroup noOfCutsButtonGrp = new ButtonGroup();
+	private JRadioButton rdbtn1Cuts;
+	private JRadioButton rdbtn6Cuts;
+
+        private double chainStartPointx;
 	private double chainStartPointy;
 	private double chain2ndPointx;
 	private double chain2ndPointy;
@@ -88,17 +95,28 @@ public class CodeStraightDialog extends JDialog {
 		compButtonGrp.add(rdbtnG40);
 		rdbtnG40.setBounds(190, 77, 54, 23);
 		contentPanel.add(rdbtnG40);
-		
+                
+                rdbtn1Cuts = new JRadioButton("1 snitt");
+                noOfCutsButtonGrp.add(rdbtn1Cuts);
+                rdbtn1Cuts.setBounds(190, 110, 100, 23);
+                contentPanel.add(rdbtn1Cuts);
+                		
+                rdbtn6Cuts = new JRadioButton("6 snitt");
+                rdbtn6Cuts.setSelected(true);
+                noOfCutsButtonGrp.add(rdbtn6Cuts);
+                rdbtn6Cuts.setBounds(190, 136, 100, 23);
+                contentPanel.add(rdbtn6Cuts);
+                		
 		cbM199 = new JCheckBox("M199");
 		cbM199.setSelected(true);
-		cbM199.setBounds(179, 119, 76, 23);
+		cbM199.setBounds(179, 199, 76, 23);
 		contentPanel.add(cbM199);
 		{
 			JPanel buttonPane = new JPanel();
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			
-			okButton = new JButton("Stång");
+			okButton = new JButton("Stäng");
 			okButton.setActionCommand("OK");
 			buttonPane.add(okButton);
 			getRootPane().setDefaultButton(okButton);
@@ -272,8 +290,12 @@ public class CodeStraightDialog extends JDialog {
 	private void addStartSection(BufferedWriter bw) {
 		try {
 			// Write start section part to bw.
-			String path = DxfCoder.class.getProtectionDomain().getCodeSource().getLocation().getPath();
-			path = new File(path).getParentFile().getPath()+ File.separator + START_SECTION_FILE_NAME;
+			// String path = DxfCoder.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+			String path = System.getProperty("user.dir");
+                        System.out.println(path);
+                        if ( rdbtn1Cuts.isSelected() )
+                            path = path + File.separator + START_SECTION_FILE_NAME_1;
+                        else path = path + File.separator + START_SECTION_FILE_NAME_6;
 			BufferedReader br = new BufferedReader(new FileReader(path));
 			String line;
 			while ((line = br.readLine()) != null) {
@@ -308,31 +330,33 @@ public class CodeStraightDialog extends JDialog {
 			bw.write("T85;\n");
 			bw.write("G149 G249;\n");
 			
-			bw.write("C002;\n");
-			bw.write(revComp + " H000 G01 " + buildCoord(chainNLPointx, chainNLPointy, true) + ";\n");
-			bw.write("H002;\n");
-			bw.write("M98 P0002;\n");
-			
-			bw.write("C900;\n");
-			bw.write(comp + " H000 G01 " + buildCoord(chain2ndPointx, chain2ndPointy, true) +  ";\n");
-			bw.write("H003;\n");
-			bw.write("M98 P0001;\n");
-			
-			bw.write("C901;\n");
-			bw.write(revComp + " H000 G01 " + buildCoord(chainNLPointx, chainNLPointy, true) + ";\n");
-			bw.write("H004;\n");
-			bw.write("M98 P0002;\n");
-			
-			bw.write("C902;\n");
-			bw.write(comp + " H000 G01 " + buildCoord(chain2ndPointx, chain2ndPointy, true) +  ";\n");
-			bw.write("H005;\n");
-			bw.write("M98 P0001;\n");
-			
-			bw.write("C903;\n");
-			bw.write(revComp + " H000 G01 " + buildCoord(chainNLPointx, chainNLPointy, true) + ";\n");
-			bw.write("H006;\n");
-			bw.write("M98 P0002;\n");
-			
+                        if ( rdbtn6Cuts.isSelected() ) {
+                            bw.write("C002;\n");
+                            bw.write(revComp + " H000 G01 " + buildCoord(chainNLPointx, chainNLPointy, true) + ";\n");
+                            bw.write("H002;\n");
+                            bw.write("M98 P0002;\n");
+
+                            bw.write("C900;\n");
+                            bw.write(comp + " H000 G01 " + buildCoord(chain2ndPointx, chain2ndPointy, true) +  ";\n");
+                            bw.write("H003;\n");
+                            bw.write("M98 P0001;\n");
+
+                            bw.write("C901;\n");
+                            bw.write(revComp + " H000 G01 " + buildCoord(chainNLPointx, chainNLPointy, true) + ";\n");
+                            bw.write("H004;\n");
+                            bw.write("M98 P0002;\n");
+
+                            bw.write("C902;\n");
+                            bw.write(comp + " H000 G01 " + buildCoord(chain2ndPointx, chain2ndPointy, true) +  ";\n");
+                            bw.write("H005;\n");
+                            bw.write("M98 P0001;\n");
+
+                            bw.write("C903;\n");
+                            bw.write(revComp + " H000 G01 " + buildCoord(chainNLPointx, chainNLPointy, true) + ";\n");
+                            bw.write("H006;\n");
+                            bw.write("M98 P0002;\n");
+                        }
+                        
 			if (cbM199.isSelected()) {
 				bw.write("M199;\n");
 			} else {
