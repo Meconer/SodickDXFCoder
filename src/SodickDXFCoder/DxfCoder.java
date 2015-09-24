@@ -363,7 +363,7 @@ public class DxfCoder implements ListSelectionListener {
 		if (selectedChains.length != 1) {
 			JOptionPane.showMessageDialog(frame, "Välj först en kedja som skall kodas");
 		} else {
-			CodeAngularDialog cd = new CodeAngularDialog(plotPanel.chainList.listOfChains.get(selectedChains[0]));
+			CodeAngularDialog cd = new CodeAngularDialog(plotPanel.chainList.listOfChains.get(selectedChains[0]),workingDir);
 			cd.showDialog();
 		}
 		
