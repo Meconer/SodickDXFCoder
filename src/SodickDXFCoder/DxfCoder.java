@@ -31,6 +31,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 public class DxfCoder implements ListSelectionListener {
 
 	private String workingDir = "E:\\Dropbox\\Mecona\\Gängfräs";
+	private String fileName;
 	private JFrame frame;
 	private JTextArea textArea;
 
@@ -293,6 +294,8 @@ public class DxfCoder implements ListSelectionListener {
 			try {
 				inFile = new BufferedReader(new FileReader(fc.getSelectedFile()));
 				workingDir = fc.getSelectedFile().getPath();
+                                fileName = fc.getSelectedFile().getName();
+                                
 				boolean inEntitiesSection = false;
 				String inLine2 = null;
 				while ( (inFile.readLine()) != null ) {
@@ -349,7 +352,7 @@ public class DxfCoder implements ListSelectionListener {
 			JOptionPane.showMessageDialog(frame, "Välj först en kedja som skall kodas");
 		} else {
                     CodeStraightDialog cd;
-                    cd = new CodeStraightDialog(plotPanel.chainList.listOfChains.get(selectedChains[0]),workingDir);
+                    cd = new CodeStraightDialog( plotPanel.chainList.listOfChains.get( selectedChains[0]), workingDir, fileName );
                     cd.showDialog();
 		}
 		
@@ -378,8 +381,9 @@ public class DxfCoder implements ListSelectionListener {
 			JOptionPane.showMessageDialog(frame, "Välj först två kedjor som skall kodas");
 		} else {
 			CodeTBDialog cd = new CodeTBDialog(plotPanel.chainList.listOfChains.get(selectedChains[0]),
-											   plotPanel.chainList.listOfChains.get(selectedChains[1]),
-											   selectedChains[0],selectedChains[1]);
+                            plotPanel.chainList.listOfChains.get(selectedChains[1]),
+                            selectedChains[0],selectedChains[1],
+                            workingDir);
 			cd.showDialog();
 		}
 		

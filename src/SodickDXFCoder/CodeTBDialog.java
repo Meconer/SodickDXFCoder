@@ -39,7 +39,7 @@ public class CodeTBDialog extends JDialog {
 	private JButton okButton;
 	private JButton btnSkapaProgram;
 
-	private static final String STANDARD_DIR = "E:\\Mats\\My Dropbox\\Ironcad";
+	private String workingDir;
 	private static final String START_SECTION_FILE_NAME = "tb.txt";
 	private final ButtonGroup compButtonGrp = new ButtonGroup();
 	private JRadioButton rdbtnG141;
@@ -82,8 +82,9 @@ public class CodeTBDialog extends JDialog {
 	 * @param chainNo1 
 	 * @param chainNo2 
 	 */
-	public CodeTBDialog(Chain chainToCode1, Chain chainToCode2, int chainNo1, int chainNo2) {
+	public CodeTBDialog(Chain chainToCode1, Chain chainToCode2, int chainNo1, int chainNo2, String workingDir) {
 		super();
+                this.workingDir = workingDir;
 		this.chainToCode1 = chainToCode1;
 		this.chainToCode2 = chainToCode2;
 		this.chainNo1 = chainNo1;
@@ -171,7 +172,7 @@ public class CodeTBDialog extends JDialog {
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			
-			okButton = new JButton("Stång");
+			okButton = new JButton("Stäng");
 			okButton.setActionCommand("OK");
 			buttonPane.add(okButton);
 			getRootPane().setDefaultButton(okButton);
@@ -219,7 +220,7 @@ public class CodeTBDialog extends JDialog {
 		}
 		
 		// Check is ok. Now start to code
-		File f = new File(STANDARD_DIR);
+		File f = new File(workingDir);
 		JFileChooser fc = new JFileChooser(f);
 		Boolean cancel = false;
 		int returnVal = fc.showSaveDialog(contentPanel);
@@ -395,8 +396,8 @@ public class CodeTBDialog extends JDialog {
 	private void addStartSection(BufferedWriter bw) {
 		try {
 			// Write start section part to bw.
-			String path = DxfCoder.class.getProtectionDomain().getCodeSource().getLocation().getPath();
-			path = new File(path).getParentFile().getPath()+ File.separator + START_SECTION_FILE_NAME;
+                        String path = System.getProperty("user.dir");
+                        path = path + File.separator + START_SECTION_FILE_NAME;
 			BufferedReader br = new BufferedReader(new FileReader(path));
 			String line;
 			while ((line = br.readLine()) != null) {
