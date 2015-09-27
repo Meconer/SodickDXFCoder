@@ -37,6 +37,7 @@ public class CodeAngularDialog extends JDialog {
     private JButton btnSkapaProgram;
 
     private String workingDir;
+    private String fileName;
     private static final String START_SECTION_FILE_NAME_6 = "angle6.txt";
     private static final String START_SECTION_FILE_NAME_1 = "angle1.txt";
 
@@ -71,9 +72,10 @@ public class CodeAngularDialog extends JDialog {
     /**
      * Create the dialog.
      */
-    public CodeAngularDialog(Chain chainToCode, String workingDir) {
+    public CodeAngularDialog(Chain chainToCode, String workingDir, String fileName) {
         super();
         this.workingDir = workingDir;
+        this.fileName = fileName;
         this.chainToCode = chainToCode;
         setBounds(100, 100, 500, 300);
         getContentPane().setLayout(new BorderLayout());
@@ -206,12 +208,13 @@ public class CodeAngularDialog extends JDialog {
     }
 
     private void code() {
-        File f = new File(workingDir);
-        JFileChooser fc = new JFileChooser(f);
+        String pathName = Util.stripFile(workingDir) + File.separator;
+        JFileChooser fc = new JFileChooser(new File(pathName));
+        fc.setSelectedFile(new File(Util.stripExtension(fileName) + ".nc"));
         Boolean cancel = false;
         int returnVal = fc.showSaveDialog(contentPanel);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
-            f = fc.getSelectedFile();
+            File f = fc.getSelectedFile();
             if (f.exists()) {
                 returnVal = JOptionPane.showConfirmDialog(contentPanel, "Filen finns, skriva över", "OBS!", JOptionPane.YES_NO_OPTION);
                 if (returnVal != JOptionPane.YES_OPTION) {
@@ -290,7 +293,9 @@ public class CodeAngularDialog extends JDialog {
                     s = s + buildCoord(a.getX2(), a.getY2(), false) + " " + buildIJ(a) + ";\n";
                     bw.write(s);
                 }
-                if (i==1) bw.write("A" + tfAngle.getText() + ";\n");
+                if (i == 1) {
+                    bw.write("A" + tfAngle.getText() + ";\n");
+                }
             }
             geo = chainToCode.entityList.get(chainToCode.entityList.size() - 1);
             if (geo.geometryType != GeometryType.LINE) {
