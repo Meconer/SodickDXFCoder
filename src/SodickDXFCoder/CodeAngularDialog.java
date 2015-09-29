@@ -275,12 +275,12 @@ public class CodeAngularDialog extends JDialog {
         lastX = -99999.88;
         lastY = -99999.88;
         try {
-            bw.write(";\n");
-            bw.write(subname + ";\n");
+            Util.writeLineToBw( bw, ";");
+            Util.writeLineToBw( bw, subname + ";");
             for (int i = 1; i <= chainToCode.entityList.size() - 2; i++) {
                 geo = chainToCode.entityList.get(i);
                 if (geo.geometryType == GeometryType.LINE) {
-                    bw.write(buildG010203(1) + buildCoord(geo.getX2(), geo.getY2(), false) + ";\n");
+                    Util.writeLineToBw( bw, buildG010203(1) + buildCoord(geo.getX2(), geo.getY2(), false) + ";");
                 }
                 if (geo.geometryType == GeometryType.ARC) {
                     Arc a = (Arc) geo;
@@ -290,20 +290,20 @@ public class CodeAngularDialog extends JDialog {
                     } else {
                         s = buildG010203(3);
                     }
-                    s = s + buildCoord(a.getX2(), a.getY2(), false) + " " + buildIJ(a) + ";\n";
-                    bw.write(s);
+                    s = s + buildCoord(a.getX2(), a.getY2(), false) + " " + buildIJ(a) + ";";
+                    Util.writeLineToBw( bw,s);
                 }
                 if (i == 1) {
-                    bw.write("A" + tfAngle.getText() + ";\n");
+                    Util.writeLineToBw( bw,"A" + tfAngle.getText() + ";");
                 }
             }
             geo = chainToCode.entityList.get(chainToCode.entityList.size() - 1);
             if (geo.geometryType != GeometryType.LINE) {
                 throw new Exception("Måste avslutas med linje");
             }
-            bw.write("A0;\n");
-            bw.write(buildG010203(1) + "G50 G40 H000 " + buildCoord(geo.getX2(), geo.getY2(), false) + ";\n");
-            bw.write("M99;\n");
+            Util.writeLineToBw( bw,"A0;");
+            Util.writeLineToBw( bw,buildG010203(1) + "G50 G40 H000 " + buildCoord(geo.getX2(), geo.getY2(), false) + ";");
+            Util.writeLineToBw( bw,"M99;");
 
         } catch (IOException e) {
             JOptionPane.showMessageDialog(contentPanel, "Fel vid skapande av subsektion!");
@@ -375,22 +375,21 @@ public class CodeAngularDialog extends JDialog {
             BufferedReader br = new BufferedReader(new FileReader(path));
             String line;
             while ((line = br.readLine()) != null) {
-                line = line + "\n";
-                bw.write(line);
+                Util.writeLineToBw( bw,line);
             }
-            bw.write("TP" + tfZLevelProgram.getText() + ";\n");
-            bw.write("TN" + tfZLevelNext.getText() + ";\n");
+            Util.writeLineToBw( bw,"TP" + tfZLevelProgram.getText() + ";");
+            Util.writeLineToBw( bw,"TN" + tfZLevelNext.getText() + ";");
 
             // Next write start point info and G92
-            bw.write("G55;\n");
-            bw.write("G90;\n");
+            Util.writeLineToBw( bw,"G55;");
+            Util.writeLineToBw( bw,"G90;");
 
-            String s = "G92 " + buildCoord(chainStartPointx, chainStartPointy, true) + " Z0;\n";
-            bw.write(s);
-            bw.write("G29;\n");
-            bw.write("T94;\n");
-            bw.write("T84;\n");
-            bw.write("C000;\n");
+            String s = "G92 " + buildCoord(chainStartPointx, chainStartPointy, true) + " Z0;";
+            Util.writeLineToBw( bw,s);
+            Util.writeLineToBw( bw,"G29;");
+            Util.writeLineToBw( bw,"T94;");
+            Util.writeLineToBw( bw,"T84;");
+            Util.writeLineToBw( bw,"C000;");
 
             String comp = "G40";
             String revComp = "G40";
@@ -410,50 +409,50 @@ public class CodeAngularDialog extends JDialog {
                 angularRevDir = "G51";
             }
 
-            s = angularDir + " A0 " + comp + " H000 G01 " + buildCoord(chain2ndPointx, chain2ndPointy, true) + ";\n";
-            bw.write(s);
-            bw.write("A" + tfAngle.getText() + ";\n");
-            bw.write("H001 C001;\n");
-            bw.write("M98 P0001;\n");
-            bw.write("T85;\n");
-            bw.write("G149 G249;\n");
+            s = angularDir + " A0 " + comp + " H000 G01 " + buildCoord(chain2ndPointx, chain2ndPointy, true) + ";";
+            Util.writeLineToBw( bw,s);
+            Util.writeLineToBw( bw,"A" + tfAngle.getText() + ";");
+            Util.writeLineToBw( bw,"H001 C001;");
+            Util.writeLineToBw( bw,"M98 P0001;");
+            Util.writeLineToBw( bw,"T85;");
+            Util.writeLineToBw( bw,"G149 G249;");
 
             if (rdbtn6Cuts.isSelected()) {
-                bw.write("C002;\n");
-                bw.write(angularRevDir + " A0 " + revComp + " H000 G01 " + buildCoord(chainNLPointx, chainNLPointy, true) + ";\n");
-                bw.write("A" + tfAngle.getText() + ";\n");
-                bw.write("H002;\n");
-                bw.write("M98 P0002;\n");
+                Util.writeLineToBw( bw,"C002;");
+                Util.writeLineToBw( bw,angularRevDir + " A0 " + revComp + " H000 G01 " + buildCoord(chainNLPointx, chainNLPointy, true) + ";");
+                Util.writeLineToBw( bw,"A" + tfAngle.getText() + ";");
+                Util.writeLineToBw( bw,"H002;");
+                Util.writeLineToBw( bw,"M98 P0002;");
 
-                bw.write("C900;\n");
-                bw.write(angularDir + " A0 " + comp + " H000 G01 " + buildCoord(chain2ndPointx, chain2ndPointy, true) + ";\n");
-                bw.write("A" + tfAngle.getText() + ";\n");
-                bw.write("H003;\n");
-                bw.write("M98 P0001;\n");
+                Util.writeLineToBw( bw,"C900;");
+                Util.writeLineToBw( bw,angularDir + " A0 " + comp + " H000 G01 " + buildCoord(chain2ndPointx, chain2ndPointy, true) + ";");
+                Util.writeLineToBw( bw,"A" + tfAngle.getText() + ";");
+                Util.writeLineToBw( bw,"H003;");
+                Util.writeLineToBw( bw,"M98 P0001;");
 
-                bw.write("C901;\n");
-                bw.write(angularRevDir + " A0 " + revComp + " H000 G01 " + buildCoord(chainNLPointx, chainNLPointy, true) + ";\n");
-                bw.write("A" + tfAngle.getText() + ";\n");
-                bw.write("H004;\n");
-                bw.write("M98 P0002;\n");
+                Util.writeLineToBw( bw,"C901;");
+                Util.writeLineToBw( bw,angularRevDir + " A0 " + revComp + " H000 G01 " + buildCoord(chainNLPointx, chainNLPointy, true) + ";");
+                Util.writeLineToBw( bw,"A" + tfAngle.getText() + ";");
+                Util.writeLineToBw( bw,"H004;");
+                Util.writeLineToBw( bw,"M98 P0002;");
 
-                bw.write("C902;\n");
-                bw.write(angularDir + " A0 " + comp + " H000 G01 " + buildCoord(chain2ndPointx, chain2ndPointy, true) + ";\n");
-                bw.write("A" + tfAngle.getText() + ";\n");
-                bw.write("H005;\n");
-                bw.write("M98 P0001;\n");
+                Util.writeLineToBw( bw,"C902;");
+                Util.writeLineToBw( bw,angularDir + " A0 " + comp + " H000 G01 " + buildCoord(chain2ndPointx, chain2ndPointy, true) + ";");
+                Util.writeLineToBw( bw,"A" + tfAngle.getText() + ";");
+                Util.writeLineToBw( bw,"H005;");
+                Util.writeLineToBw( bw,"M98 P0001;");
 
-                bw.write("C903;\n");
-                bw.write(angularRevDir + " A0 " + revComp + " H000 G01 " + buildCoord(chainNLPointx, chainNLPointy, true) + ";\n");
-                bw.write("A" + tfAngle.getText() + ";\n");
-                bw.write("H006;\n");
-                bw.write("M98 P0002;\n");
+                Util.writeLineToBw( bw,"C903;");
+                Util.writeLineToBw( bw,angularRevDir + " A0 " + revComp + " H000 G01 " + buildCoord(chainNLPointx, chainNLPointy, true) + ";");
+                Util.writeLineToBw( bw,"A" + tfAngle.getText() + ";");
+                Util.writeLineToBw( bw,"H006;");
+                Util.writeLineToBw( bw,"M98 P0002;");
             }
 
             if (cbM199.isSelected()) {
-                bw.write("M199;\n");
+                Util.writeLineToBw( bw,"M199;");
             } else {
-                bw.write("M02;\n");
+                Util.writeLineToBw( bw,"M02;");
             }
 
         } catch (FileNotFoundException e) {

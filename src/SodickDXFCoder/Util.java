@@ -5,7 +5,9 @@
  */
 package SodickDXFCoder;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.IOException;
 
 /**
  *
@@ -24,6 +26,11 @@ public final class Util {
     public static String stripFile(String s) {
         if(s.contains(File.separator)) return s.substring(0, s.lastIndexOf(File.separator));
         else return s;
+    }
+    
+    public static void writeLineToBw( BufferedWriter bw, String s ) throws IOException {
+        bw.write(s);
+        bw.newLine();
     }
 
     
