@@ -46,6 +46,7 @@ public class DxfCoder implements ListSelectionListener {
 
     /**
      * Launch the application.
+     * @param args
      */
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
@@ -55,7 +56,7 @@ public class DxfCoder implements ListSelectionListener {
                     DxfCoder window = new DxfCoder();
                     window.frame.setVisible(true);
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    System.out.println("Exception " + e.getMessage());
                 }
             }
         });

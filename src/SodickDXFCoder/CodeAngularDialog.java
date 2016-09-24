@@ -23,6 +23,8 @@ import javax.swing.JRadioButton;
 import javax.swing.ButtonGroup;
 
 import SodickDXFCoder.GeometricEntity.GeometryType;
+import java.text.DecimalFormatSymbols;
+import java.util.Locale;
 import javax.swing.JCheckBox;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
@@ -36,8 +38,8 @@ public class CodeAngularDialog extends JDialog {
     private JButton okButton;
     private JButton btnSkapaProgram;
 
-    private String workingDir;
-    private String fileName;
+    private final String workingDir;
+    private final String fileName;
     private static final String START_SECTION_FILE_NAME_6 = "angle6.txt";
     private static final String START_SECTION_FILE_NAME_1 = "angle1.txt";
 
@@ -71,12 +73,20 @@ public class CodeAngularDialog extends JDialog {
 
     /**
      * Create the dialog.
+     * @param chainToCode
+     * @param workingDir
+     * @param fileName
      */
     public CodeAngularDialog(Chain chainToCode, String workingDir, String fileName) {
         super();
         this.workingDir = workingDir;
         this.fileName = fileName;
         this.chainToCode = chainToCode;
+        init();
+
+    }
+
+    private void init() {
         setBounds(100, 100, 500, 300);
         getContentPane().setLayout(new BorderLayout());
         contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -85,6 +95,7 @@ public class CodeAngularDialog extends JDialog {
         btnSkapaProgram = new JButton("Skapa program");
         btnSkapaProgram.setBounds(138, 180, 157, 23);
         btnSkapaProgram.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent arg0) {
                 code();
             }
@@ -199,7 +210,6 @@ public class CodeAngularDialog extends JDialog {
 
             }
         });
-
     }
 
     public void showDialog() {
@@ -294,7 +304,7 @@ public class CodeAngularDialog extends JDialog {
                     Util.writeLineToBw( bw,s);
                 }
                 if (i == 1) {
-                    Util.writeLineToBw( bw,"A" + tfAngle.getText() + ";");
+                    Util.writeLineToBw( bw,"A" + convertToDecimal(tfAngle.getText()) + ";");
                 }
             }
             geo = chainToCode.entityList.get(chainToCode.entityList.size() - 1);
@@ -377,8 +387,8 @@ public class CodeAngularDialog extends JDialog {
             while ((line = br.readLine()) != null) {
                 Util.writeLineToBw( bw,line);
             }
-            Util.writeLineToBw( bw,"TP" + tfZLevelProgram.getText() + ";");
-            Util.writeLineToBw( bw,"TN" + tfZLevelNext.getText() + ";");
+            Util.writeLineToBw( bw,"TP" + convertToDecimal(tfZLevelProgram.getText()) + ";");
+            Util.writeLineToBw( bw,"TN" + convertToDecimal(tfZLevelNext.getText()) + ";");
 
             // Next write start point info and G92
             Util.writeLineToBw( bw,"G55;");
@@ -411,7 +421,7 @@ public class CodeAngularDialog extends JDialog {
 
             s = angularDir + " A0 " + comp + " H000 G01 " + buildCoord(chain2ndPointx, chain2ndPointy, true) + ";";
             Util.writeLineToBw( bw,s);
-            Util.writeLineToBw( bw,"A" + tfAngle.getText() + ";");
+            Util.writeLineToBw( bw,"A" + convertToDecimal(tfAngle.getText()) + ";");
             Util.writeLineToBw( bw,"H001 C001;");
             Util.writeLineToBw( bw,"M98 P0001;");
             Util.writeLineToBw( bw,"T85;");
@@ -420,31 +430,31 @@ public class CodeAngularDialog extends JDialog {
             if (rdbtn6Cuts.isSelected()) {
                 Util.writeLineToBw( bw,"C002;");
                 Util.writeLineToBw( bw,angularRevDir + " A0 " + revComp + " H000 G01 " + buildCoord(chainNLPointx, chainNLPointy, true) + ";");
-                Util.writeLineToBw( bw,"A" + tfAngle.getText() + ";");
+                Util.writeLineToBw( bw,"A" + convertToDecimal(tfAngle.getText()) + ";");
                 Util.writeLineToBw( bw,"H002;");
                 Util.writeLineToBw( bw,"M98 P0002;");
 
                 Util.writeLineToBw( bw,"C900;");
                 Util.writeLineToBw( bw,angularDir + " A0 " + comp + " H000 G01 " + buildCoord(chain2ndPointx, chain2ndPointy, true) + ";");
-                Util.writeLineToBw( bw,"A" + tfAngle.getText() + ";");
+                Util.writeLineToBw( bw,"A" + convertToDecimal(tfAngle.getText()) + ";");
                 Util.writeLineToBw( bw,"H003;");
                 Util.writeLineToBw( bw,"M98 P0001;");
 
                 Util.writeLineToBw( bw,"C901;");
                 Util.writeLineToBw( bw,angularRevDir + " A0 " + revComp + " H000 G01 " + buildCoord(chainNLPointx, chainNLPointy, true) + ";");
-                Util.writeLineToBw( bw,"A" + tfAngle.getText() + ";");
+                Util.writeLineToBw( bw,"A" + convertToDecimal(tfAngle.getText()) + ";");
                 Util.writeLineToBw( bw,"H004;");
                 Util.writeLineToBw( bw,"M98 P0002;");
 
                 Util.writeLineToBw( bw,"C902;");
                 Util.writeLineToBw( bw,angularDir + " A0 " + comp + " H000 G01 " + buildCoord(chain2ndPointx, chain2ndPointy, true) + ";");
-                Util.writeLineToBw( bw,"A" + tfAngle.getText() + ";");
+                Util.writeLineToBw( bw,"A" + convertToDecimal(tfAngle.getText()) + ";");
                 Util.writeLineToBw( bw,"H005;");
                 Util.writeLineToBw( bw,"M98 P0001;");
 
                 Util.writeLineToBw( bw,"C903;");
                 Util.writeLineToBw( bw,angularRevDir + " A0 " + revComp + " H000 G01 " + buildCoord(chainNLPointx, chainNLPointy, true) + ";");
-                Util.writeLineToBw( bw,"A" + tfAngle.getText() + ";");
+                Util.writeLineToBw( bw,"A" + convertToDecimal(tfAngle.getText()) + ";");
                 Util.writeLineToBw( bw,"H006;");
                 Util.writeLineToBw( bw,"M98 P0002;");
             }
@@ -463,5 +473,21 @@ public class CodeAngularDialog extends JDialog {
             JOptionPane.showMessageDialog(contentPanel, e.getMessage());
         }
 
+    }
+
+    private String convertToDecimal(String text) {
+        double value;
+        String result = "-9999.9";
+        try {
+            value = Double.parseDouble(text);
+            DecimalFormat df = new DecimalFormat("0.0###");
+            df.setDecimalFormatSymbols(new DecimalFormatSymbols(Locale.US));
+            result = df.format(value);
+        } catch ( NumberFormatException e ) {
+            JOptionPane.showMessageDialog(contentPanel, "Felaktigt tal");
+        }
+        
+        return result;
+        
     }
 }
