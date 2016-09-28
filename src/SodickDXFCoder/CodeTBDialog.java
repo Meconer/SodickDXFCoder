@@ -244,6 +244,8 @@ public class CodeTBDialog extends JDialog {
                     addStartSection(bw);
                     addSubSection(bw, "N0001");
                     chainToCode1.reverseChain();
+                    chainToCode2.reverseChain();
+                    setInitialPoints();
                     addSubSection(bw, "N0002");
                     bw.close();
                 } catch (IOException e) {
@@ -517,7 +519,7 @@ public class CodeTBDialog extends JDialog {
             for (int i = 1; i <= topChain.entityList.size() - 2; i++) {
                 geo = topChain.entityList.get(i);
                 if (geo.geometryType == GeometryType.LINE) {
-                    Util.writeLineToBw( bw,buildG010203Top(1) + buildCoordTop(geo.getX2() - deltax, geo.getY2() - deltay, false) + " : ");
+                    Util.writeToBw( bw,buildG010203Top(1) + buildCoordTop(geo.getX2() - deltax, geo.getY2() - deltay, false) + " : ");
                 }
                 if (geo.geometryType == GeometryType.ARC) {
                     Arc a = (Arc) geo;
@@ -528,7 +530,7 @@ public class CodeTBDialog extends JDialog {
                         s = buildG010203Top(3);
                     }
                     s = s + buildCoordTop(a.getX2() - deltax, a.getY2() - deltay, false) + " " + buildIJ(a) + " : ";
-                    Util.writeLineToBw( bw,s);
+                    Util.writeToBw( bw,s);
                 }
                 geo = bottomChain.entityList.get(i);
                 if (geo.geometryType == GeometryType.LINE) {

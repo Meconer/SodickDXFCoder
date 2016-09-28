@@ -33,5 +33,9 @@ public final class Util {
         bw.newLine();
     }
 
+    public static void writeToBw( BufferedWriter bw, String s ) throws IOException {
+        bw.write(s);
+    }
+
     
 }
