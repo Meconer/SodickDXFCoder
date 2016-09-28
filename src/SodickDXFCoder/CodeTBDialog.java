@@ -532,7 +532,7 @@ public class CodeTBDialog extends JDialog {
                     s = s + buildCoordTop(a.getX2() - deltax, a.getY2() - deltay, false) + " " + buildIJ(a) + " : ";
                     Util.writeToBw( bw,s);
                 }
-                geo = bottomChain.entityList.get(i);
+                geo = bottomChain.entityList.get(i); //
                 if (geo.geometryType == GeometryType.LINE) {
                     Util.writeLineToBw( bw,buildG010203Bottom(1) + buildCoordBottom(geo.getX2(), geo.getY2(), false) + ";");
                 }
