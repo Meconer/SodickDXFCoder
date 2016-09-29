@@ -441,8 +441,8 @@ public class CodeTBDialog extends JDialog {
 
             Util.writeLineToBw( bw,comp + " H000;");
 
-            s = "G01 " + buildCoordTop(chain2ndPointBottomx - deltax, chain2ndPointBottomy - deltay, true) + " : "
-                    + "G01 " + buildCoordBottom(chain2ndPointTopx, chain2ndPointTopy, true) + ";";
+            s = "G01 " + buildCoordTop(chain2ndPointBottomx, chain2ndPointBottomy , true) + " : "
+                    + "G01 " + buildCoordBottom(chain2ndPointTopx - deltax, chain2ndPointTopy - deltay, true) + ";";
             Util.writeLineToBw( bw,s);
             Util.writeLineToBw( bw,"H001 C001;");
             Util.writeLineToBw( bw,"M98 P0001;");
@@ -451,40 +451,40 @@ public class CodeTBDialog extends JDialog {
 
             Util.writeLineToBw( bw,"C002;");
             Util.writeLineToBw( bw,revComp + " H000;");
-            s = "G01 " + buildCoordTop(chainNLPointBottomx - deltax, chainNLPointBottomy - deltay, true) + " : "
-                    + "G01 " + buildCoordBottom(chainNLPointTopx, chainNLPointTopy, true) + ";";
+            s = "G01 " + buildCoordTop(chainNLPointBottomx, chainNLPointBottomy, true) + " : "
+                    + "G01 " + buildCoordBottom(chainNLPointTopx - deltax, chainNLPointTopy - deltay, true) + ";";
             Util.writeLineToBw( bw,s);
             Util.writeLineToBw( bw,"H002;");
             Util.writeLineToBw( bw,"M98 P0002;");
 
             Util.writeLineToBw( bw,"C900;");
             Util.writeLineToBw( bw,comp + " H000;");
-            s = "G01 " + buildCoordTop(chain2ndPointBottomx - deltax, chain2ndPointBottomy - deltay, true) + " : "
-                    + "G01 " + buildCoordBottom(chain2ndPointTopx, chain2ndPointTopy, true) + ";";
+            s = "G01 " + buildCoordTop(chain2ndPointBottomx, chain2ndPointBottomy, true) + " : "
+                    + "G01 " + buildCoordBottom(chain2ndPointTopx - deltax, chain2ndPointTopy - deltay, true) + ";";
             Util.writeLineToBw( bw,s);
             Util.writeLineToBw( bw,"H003;");
             Util.writeLineToBw( bw,"M98 P0001;");
 
             Util.writeLineToBw( bw,"C901;");
             Util.writeLineToBw( bw,revComp + " H000;");
-            s = "G01 " + buildCoordTop(chainNLPointBottomx - deltax, chainNLPointBottomy - deltay, true) + " : "
-                    + "G01 " + buildCoordBottom(chainNLPointTopx, chainNLPointTopy, true) + ";";
+            s = "G01 " + buildCoordTop(chainNLPointBottomx, chainNLPointBottomy, true) + " : "
+                    + "G01 " + buildCoordBottom(chainNLPointTopx - deltax, chainNLPointTopy - deltay, true) + ";";
             Util.writeLineToBw( bw,s);
             Util.writeLineToBw( bw,"H004;");
             Util.writeLineToBw( bw,"M98 P0002;");
 
             Util.writeLineToBw( bw,"C902;");
             Util.writeLineToBw( bw,comp + " H000;");
-            s = "G01 " + buildCoordTop(chain2ndPointBottomx - deltax, chain2ndPointBottomy - deltay, true) + " : "
-                    + "G01 " + buildCoordBottom(chain2ndPointTopx, chain2ndPointTopy, true) + ";";
+            s = "G01 " + buildCoordTop(chain2ndPointBottomx, chain2ndPointBottomy, true) + " : "
+                    + "G01 " + buildCoordBottom(chain2ndPointTopx - deltax, chain2ndPointTopy - deltay, true) + ";";
             Util.writeLineToBw( bw,s);
             Util.writeLineToBw( bw,"H005;");
             Util.writeLineToBw( bw,"M98 P0001;");
 
             Util.writeLineToBw( bw,"C903;");
             Util.writeLineToBw( bw,revComp + " H000;");
-            s = "G01 " + buildCoordTop(chainNLPointBottomx - deltax, chainNLPointBottomy - deltay, true) + " : "
-                    + "G01 " + buildCoordBottom(chainNLPointTopx, chainNLPointTopy, true) + ";";
+            s = "G01 " + buildCoordTop(chainNLPointBottomx, chainNLPointBottomy, true) + " : "
+                    + "G01 " + buildCoordBottom(chainNLPointTopx - deltax, chainNLPointTopy - deltay, true) + ";";
             Util.writeLineToBw( bw,s);
             Util.writeLineToBw( bw,"H006;");
             Util.writeLineToBw( bw,"M98 P0002;");
@@ -519,7 +519,7 @@ public class CodeTBDialog extends JDialog {
             for (int i = 1; i <= topChain.entityList.size() - 2; i++) {
                 geo = bottomChain.entityList.get(i);
                 if (geo.geometryType == GeometryType.LINE) {
-                    Util.writeToBw( bw,buildG010203Bottom(1) + buildCoordBottom(geo.getX2() - deltax, geo.getY2() - deltay, false) + " : ");
+                    Util.writeToBw( bw,buildG010203Bottom(1) + buildCoordBottom(geo.getX2(), geo.getY2() , false) + " : ");
                 }
                 if (geo.geometryType == GeometryType.ARC) {
                     Arc a = (Arc) geo;
@@ -529,12 +529,12 @@ public class CodeTBDialog extends JDialog {
                     } else {
                         s = buildG010203Bottom(3);
                     }
-                    s = s + buildCoordBottom(a.getX2() - deltax, a.getY2() - deltay, false) + " " + buildIJ(a) + " : ";
+                    s = s + buildCoordBottom(a.getX2(), a.getY2() , false) + " " + buildIJ(a) + " : ";
                     Util.writeToBw( bw,s);
                 }
-                geo = bottomChain.entityList.get(i); //
+                geo = topChain.entityList.get(i); //
                 if (geo.geometryType == GeometryType.LINE) {
-                    Util.writeLineToBw( bw,buildG010203Top(1) + buildCoordTop(geo.getX2(), geo.getY2(), false) + ";");
+                    Util.writeLineToBw( bw,buildG010203Top(1) + buildCoordTop(geo.getX2() - deltax, geo.getY2() - deltay, false) + ";");
                 }
                 if (geo.geometryType == GeometryType.ARC) {
                     Arc a = (Arc) geo;
@@ -544,7 +544,7 @@ public class CodeTBDialog extends JDialog {
                     } else {
                         s = buildG010203Top(3);
                     }
-                    s = s + buildCoordTop(a.getX2(), a.getY2(), false) + " " + buildIJ(a) + ";";
+                    s = s + buildCoordTop(a.getX2() - deltax, a.getY2() - deltay, false) + " " + buildIJ(a) + ";";
                     Util.writeLineToBw( bw,s);
                 }
             }
@@ -553,7 +553,7 @@ public class CodeTBDialog extends JDialog {
                 throw new Exception("Måste avslutas med linje");
             }
             Util.writeLineToBw( bw,"G140;");
-            Util.writeLineToBw( bw,buildG010203Top(1) + buildCoordTop(geo.getX2(), geo.getY2(), false) + ";");
+            Util.writeLineToBw( bw,buildG010203Bottom(1) + buildCoordBottom(geo.getX2(), geo.getY2(), false) + ";");
             Util.writeLineToBw( bw,"M99;");
 
         } catch (IOException e) {
