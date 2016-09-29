@@ -304,7 +304,7 @@ public class CodeAngularDialog extends JDialog {
                     Util.writeLineToBw( bw,s);
                 }
                 if (i == 1) {
-                    Util.writeLineToBw( bw,"A" + convertToDecimal(tfAngle.getText()) + ";");
+                    Util.writeLineToBw( bw,"A" + Util.convertToDecimal(tfAngle.getText()) + ";");
                 }
             }
             geo = chainToCode.entityList.get(chainToCode.entityList.size() - 1);
@@ -387,8 +387,8 @@ public class CodeAngularDialog extends JDialog {
             while ((line = br.readLine()) != null) {
                 Util.writeLineToBw( bw,line);
             }
-            Util.writeLineToBw( bw,"TP" + convertToDecimal(tfZLevelProgram.getText()) + ";");
-            Util.writeLineToBw( bw,"TN" + convertToDecimal(tfZLevelNext.getText()) + ";");
+            Util.writeLineToBw( bw,"TP" + Util.convertToDecimal(tfZLevelProgram.getText()) + ";");
+            Util.writeLineToBw( bw,"TN" + Util.convertToDecimal(tfZLevelNext.getText()) + ";");
 
             // Next write start point info and G92
             Util.writeLineToBw( bw,"G55;");
@@ -421,7 +421,7 @@ public class CodeAngularDialog extends JDialog {
 
             s = angularDir + " A0 " + comp + " H000 G01 " + buildCoord(chain2ndPointx, chain2ndPointy, true) + ";";
             Util.writeLineToBw( bw,s);
-            Util.writeLineToBw( bw,"A" + convertToDecimal(tfAngle.getText()) + ";");
+            Util.writeLineToBw( bw,"A" + Util.convertToDecimal(tfAngle.getText()) + ";");
             Util.writeLineToBw( bw,"H001 C001;");
             Util.writeLineToBw( bw,"M98 P0001;");
             Util.writeLineToBw( bw,"T85;");
@@ -430,31 +430,31 @@ public class CodeAngularDialog extends JDialog {
             if (rdbtn6Cuts.isSelected()) {
                 Util.writeLineToBw( bw,"C002;");
                 Util.writeLineToBw( bw,angularRevDir + " A0 " + revComp + " H000 G01 " + buildCoord(chainNLPointx, chainNLPointy, true) + ";");
-                Util.writeLineToBw( bw,"A" + convertToDecimal(tfAngle.getText()) + ";");
+                Util.writeLineToBw( bw,"A" + Util.convertToDecimal(tfAngle.getText()) + ";");
                 Util.writeLineToBw( bw,"H002;");
                 Util.writeLineToBw( bw,"M98 P0002;");
 
                 Util.writeLineToBw( bw,"C900;");
                 Util.writeLineToBw( bw,angularDir + " A0 " + comp + " H000 G01 " + buildCoord(chain2ndPointx, chain2ndPointy, true) + ";");
-                Util.writeLineToBw( bw,"A" + convertToDecimal(tfAngle.getText()) + ";");
+                Util.writeLineToBw( bw,"A" + Util.convertToDecimal(tfAngle.getText()) + ";");
                 Util.writeLineToBw( bw,"H003;");
                 Util.writeLineToBw( bw,"M98 P0001;");
 
                 Util.writeLineToBw( bw,"C901;");
                 Util.writeLineToBw( bw,angularRevDir + " A0 " + revComp + " H000 G01 " + buildCoord(chainNLPointx, chainNLPointy, true) + ";");
-                Util.writeLineToBw( bw,"A" + convertToDecimal(tfAngle.getText()) + ";");
+                Util.writeLineToBw( bw,"A" + Util.convertToDecimal(tfAngle.getText()) + ";");
                 Util.writeLineToBw( bw,"H004;");
                 Util.writeLineToBw( bw,"M98 P0002;");
 
                 Util.writeLineToBw( bw,"C902;");
                 Util.writeLineToBw( bw,angularDir + " A0 " + comp + " H000 G01 " + buildCoord(chain2ndPointx, chain2ndPointy, true) + ";");
-                Util.writeLineToBw( bw,"A" + convertToDecimal(tfAngle.getText()) + ";");
+                Util.writeLineToBw( bw,"A" + Util.convertToDecimal(tfAngle.getText()) + ";");
                 Util.writeLineToBw( bw,"H005;");
                 Util.writeLineToBw( bw,"M98 P0001;");
 
                 Util.writeLineToBw( bw,"C903;");
                 Util.writeLineToBw( bw,angularRevDir + " A0 " + revComp + " H000 G01 " + buildCoord(chainNLPointx, chainNLPointy, true) + ";");
-                Util.writeLineToBw( bw,"A" + convertToDecimal(tfAngle.getText()) + ";");
+                Util.writeLineToBw( bw,"A" + Util.convertToDecimal(tfAngle.getText()) + ";");
                 Util.writeLineToBw( bw,"H006;");
                 Util.writeLineToBw( bw,"M98 P0002;");
             }
@@ -475,19 +475,5 @@ public class CodeAngularDialog extends JDialog {
 
     }
 
-    private String convertToDecimal(String text) {
-        double value;
-        String result = "-9999.9";
-        try {
-            value = Double.parseDouble(text);
-            DecimalFormat df = new DecimalFormat("0.0###");
-            df.setDecimalFormatSymbols(new DecimalFormatSymbols(Locale.US));
-            result = df.format(value);
-        } catch ( NumberFormatException e ) {
-            JOptionPane.showMessageDialog(contentPanel, "Felaktigt tal");
-        }
-        
-        return result;
-        
-    }
+
 }
