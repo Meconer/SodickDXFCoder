@@ -553,7 +553,7 @@ public class CodeTBDialog extends JDialog {
                 throw new Exception("Måste avslutas med linje");
             }
             Util.writeLineToBw( bw,"G140;");
-            Util.writeLineToBw( bw,buildG010203Bottom(1) + buildCoordBottom(geo.getX2(), geo.getY2(), false) + ";");
+            Util.writeLineToBw( bw,buildG010203Bottom(1) + buildCoordBottom(geo.getX2() - deltax, geo.getY2() - deltay, false) + ";");
             Util.writeLineToBw( bw,"M99;");
 
         } catch (IOException e) {
