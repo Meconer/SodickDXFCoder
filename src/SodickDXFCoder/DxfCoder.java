@@ -330,6 +330,7 @@ public class DxfCoder implements ListSelectionListener {
                         }
                     }
                 }
+                inFile.close();
                 plotPanel.repaint();
                 chainListBoxModel.clear();
                 int noOfChains = plotPanel.chainList.listOfChains.size();
@@ -345,7 +346,9 @@ public class DxfCoder implements ListSelectionListener {
                 JOptionPane.showMessageDialog(frame, "Unable to find file");
             } catch (IOException e) {
                 JOptionPane.showMessageDialog(frame, "Error opening file");
-            }
+            } 
+            
+                
         }
     }
 
