@@ -8,7 +8,7 @@ import java.util.ListIterator;
 public class Chain {
 
 	ArrayList<GeometricEntity> entityList;
-	private static final double CHAIN_LINK_DISTANCE = 0.1;
+	private static final double CHAIN_LINK_DISTANCE = 0.002;
 	private boolean selected = false;
 
 	public Chain() {
