@@ -16,7 +16,7 @@ public class ChainList {
 	
 	// Constructor. Create a new list of chains
 	public ChainList() {
-		listOfChains = new ArrayList<Chain>();
+		listOfChains = new ArrayList<>();
 	}
 
 	
@@ -82,7 +82,7 @@ public class ChainList {
 
 
 	public void selectElement(Rectangle2D.Double selRect) {
-		ArrayList<GeometricEntity> candidateList = new ArrayList<GeometricEntity>();
+		ArrayList<GeometricEntity> candidateList = new ArrayList<>();
 		for (int i = 0 ; i < listOfChains.size() ; i++ ) {
 			Chain ch = listOfChains.get(i);
 			for (int j = 0 ; j < ch.entityList.size() ; j++) {

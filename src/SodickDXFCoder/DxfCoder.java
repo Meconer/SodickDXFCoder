@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import javax.swing.AbstractAction;
@@ -210,6 +211,13 @@ public class DxfCoder implements ListSelectionListener {
         return l;
     }
 
+    private void storePathInPrefs(File selectedFile) {
+        Path chosenDirectory = selectedFile.toPath().getParent();
+        String chosenDirectoryString = chosenDirectory.toString();
+        System.out.println("chosenDirectoryString: " + chosenDirectoryString);
+        SodickDxfCoderPreferences.getInstance().setDefaultDirectory(chosenDirectory.toString());
+    }
+
     @SuppressWarnings("serial")
     private class OpenFileAction extends AbstractAction {
 
@@ -297,7 +305,7 @@ public class DxfCoder implements ListSelectionListener {
     public void fileOpen() {
         plotPanel.chainList.clear();
         BufferedReader inFile;
-        File dir = new File(workingDir);
+        File dir = new File(SodickDxfCoderPreferences.getInstance().getDefaultDirectory());
         JFileChooser fc = new JFileChooser(dir);
         fc.removeChoosableFileFilter(fc.getAcceptAllFileFilter());
         fc.addChoosableFileFilter(new FileNameExtensionFilter("DXF-filer", "dxf"));
@@ -307,6 +315,8 @@ public class DxfCoder implements ListSelectionListener {
                 inFile = new BufferedReader(new FileReader(fc.getSelectedFile()));
                 workingDir = fc.getSelectedFile().getPath();
                 fileName = fc.getSelectedFile().getName();
+                
+                storePathInPrefs( fc.getSelectedFile());
 
                 boolean inEntitiesSection = false;
                 String inLine2 = null;
